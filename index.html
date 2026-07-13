@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Memuat Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logopastikbaik.png">
     
     <script>
         tailwind.config = {
@@ -50,12 +51,8 @@
     <!-- Navbar -->
     <nav class="fixed w-full z-50 top-0 start-0 border-b border-gray-200 bg-white/90 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
-            <a href="#" class="flex items-center space-x-2">
-                <!-- Logo Simple Inline SVG -->
-                <svg class="w-8 h-8 text-brand-green" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="#0f4c5c"/>
-                    <path d="M12 2a10 10 0 0 0-7.07 17.07A10 10 0 0 1 12 2z" fill="#2a9d8f" opacity="0.8"/>
-                </svg>
+            <a href="#" class="flex items-center space-x-3">
+                <img src="logopastikbaik.png" alt="PastiBaik Logo" class="w-10 h-10 object-contain rounded-full">
                 <span class="self-center text-2xl font-bold whitespace-nowrap text-brand-blue">Pasti<span class="text-brand-green">Baik</span></span>
             </a>
             <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -205,11 +202,8 @@
     <footer class="bg-slate-900 text-slate-300 py-12">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8 mb-8 border-b border-slate-700 pb-8">
             <div class="md:col-span-2">
-                <a href="#" class="flex items-center space-x-2 mb-4">
-                    <svg class="w-8 h-8 text-brand-green" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="#ffffff"/>
-                        <path d="M12 2a10 10 0 0 0-7.07 17.07A10 10 0 0 1 12 2z" fill="#2a9d8f" opacity="0.9"/>
-                    </svg>
+                <a href="#" class="flex items-center space-x-3 mb-4">
+                    <img src="logopastikbaik.png" alt="PastiBaik Logo" class="w-10 h-10 object-contain rounded-full">
                     <span class="self-center text-2xl font-bold whitespace-nowrap text-white">Pasti<span class="text-brand-green">Baik</span></span>
                 </a>
                 <p class="text-sm text-slate-400 max-w-sm mb-4">Platform kurasi produk lokal unggulan. Menghadirkan ketenangan berbelanja dengan jaminan kualitas, keamanan, dan keabsahan legalitas untuk berbagai kebutuhan Anda.</p>
@@ -407,6 +401,19 @@
 
         window.formatRupiah = (number) => {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        };
+    </script>
+
+    <script>
+        // Konfigurasi Firebase dasar. Ganti nilai di bawah dengan config dari Firebase Console Anda.
+        window.__app_id = 'pastibaik-cms';
+        window.__firebase_config = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
     </script>
 
