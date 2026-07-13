@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PastiBaik | Bukti, Bukan Janji</title>
+    <!-- Memuat Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Awesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Memuat Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0f4c5c', // Teal/Dark Blue
+                            green: '#2a9d8f', // Soft Emerald
+                            light: '#e9c46a', // Accent
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles untuk animasi halus */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #0f4c5c, #2a9d8f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="font-sans bg-slate-50 text-slate-800 antialiased selection:bg-brand-green selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 start-0 border-b border-gray-200 bg-white/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4">
+            <a href="#" class="flex items-center space-x-2">
+                <!-- Logo Simple Inline SVG -->
+                <svg class="w-8 h-8 text-brand-green" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="#0f4c5c"/>
+                    <path d="M12 2a10 10 0 0 0-7.07 17.07A10 10 0 0 1 12 2z" fill="#2a9d8f" opacity="0.8"/>
+                </svg>
+                <span class="self-center text-2xl font-bold whitespace-nowrap text-brand-blue">Pasti<span class="text-brand-green">Baik</span></span>
+            </a>
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button" class="text-white bg-brand-blue hover:bg-brand-green focus:ring-4 focus:outline-none focus:ring-brand-green/50 font-medium rounded-full text-sm px-6 py-2.5 text-center transition-colors shadow-lg shadow-brand-blue/30">
+                    Katalog Produk
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+                    <li><a href="#beranda" class="block py-2 px-3 text-brand-blue rounded md:bg-transparent md:text-brand-blue md:p-0 font-semibold">Beranda</a></li>
+                    <li><a href="#keunggulan" class="block py-2 px-3 text-slate-600 hover:text-brand-green md:p-0 transition-colors">Keunggulan</a></li>
+                    <li><a href="#etalase" class="block py-2 px-3 text-slate-600 hover:text-brand-green md:p-0 transition-colors">Etalase</a></li>
+                    <li><a href="#mitra" class="block py-2 px-3 text-slate-600 hover:text-brand-green md:p-0 transition-colors">Kemitraan</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="pt-32 pb-20 md:pt-40 md:pb-28 px-4 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 space-y-6 text-center md:text-left">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-green/10 text-brand-green font-medium text-sm">
+                <i class="fa-solid fa-check-circle"></i> Kualitas Tervalidasi & Terjamin
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-800">
+                Temukan Produk Pilihan,<br> 
+                <span class="gradient-text">Tanpa Rasa Ragu.</span>
+            </h1>
+            <p class="text-lg text-slate-600 leading-relaxed max-w-xl mx-auto md:mx-0">
+                PastiBaik mengkurasi berbagai produk terbaik—dari konsumsi hingga kebutuhan sehari-hari—dengan standar keamanan, kualitas, dan legalitas yang jelas. Bukti, bukan sekadar janji.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
+                <a href="#etalase" class="px-8 py-3.5 text-white bg-brand-green hover:bg-brand-blue rounded-full font-semibold shadow-lg shadow-brand-green/30 transition-all transform hover:scale-105 text-center">
+                    Belanja Sekarang <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#keunggulan" class="px-8 py-3.5 text-brand-blue bg-white border-2 border-slate-200 hover:border-brand-blue rounded-full font-semibold transition-all text-center">
+                    Pelajari Proses Kami
+                </a>
+            </div>
+        </div>
+        <div class="md:w-1/2 relative">
+            <!-- Dekorasi background -->
+            <div class="absolute inset-0 bg-brand-green/20 blur-3xl rounded-full transform -translate-x-4 translate-y-4"></div>
+            <img src="https://placehold.co/800x600/e2e8f0/0f4c5c?text=Produk+Terkurasi+PastiBaik" alt="PastiBaik Products" class="relative z-10 w-full h-auto rounded-2xl shadow-2xl object-cover border-4 border-white">
+            
+            <!-- Floating Badge -->
+            <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl z-20 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                    <i class="fa-solid fa-shield-check text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Status</p>
+                    <p class="font-bold text-slate-800">100% Tervalidasi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keunggulan (Value Proposition) -->
+    <section id="keunggulan" class="bg-white py-20 border-y border-slate-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-sm font-bold text-brand-green tracking-widest uppercase mb-2">Mengapa PastiBaik?</h2>
+                <h3 class="text-3xl font-bold text-slate-800">Belanja Tenang, Kualitas Terjamin</h3>
+                <p class="text-slate-500 mt-4">Setiap produk yang masuk ke etalase kami harus melewati 3 pilar kurasi utama untuk memastikan Anda mendapatkan yang terbaik.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover-lift text-center">
+                    <div class="w-16 h-16 mx-auto bg-blue-100 text-brand-blue rounded-2xl flex items-center justify-center text-2xl mb-6 transform rotate-3">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-3">Tervalidasi & Sah</h4>
+                    <p class="text-slate-600">Legalitas dan izin edar produk (NIB, BPOM, Halal, dll) kami pastikan lengkap dan sah secara regulasi.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover-lift text-center">
+                    <div class="w-16 h-16 mx-auto bg-green-100 text-brand-green rounded-2xl flex items-center justify-center text-2xl mb-6 transform -rotate-3">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-3">Aman & Terpercaya</h4>
+                    <p class="text-slate-600">Aman dikonsumsi maupun digunakan. Terbuat dari bahan baku yang jelas asal-usulnya dan diproses dengan standar kebersihan tinggi.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover-lift text-center">
+                    <div class="w-16 h-16 mx-auto bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center text-2xl mb-6 transform rotate-3">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-800 mb-3">Kualitas Terkurasi</h4>
+                    <p class="text-slate-600">Standar pengemasan, material, fungsi, dan mutu produk diuji secara ketat sebelum layak menyandang label PastiBaik.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Etalase Produk -->
+    <section id="etalase" class="py-20 bg-slate-50 min-h-[500px]">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Etalase Pilihan</h2>
+                    <p class="text-slate-500">Koleksi produk lokal terbaik yang telah kami kurasi minggu ini.</p>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-products" class="flex justify-center items-center py-20">
+                <i class="fa-solid fa-spinner fa-spin text-4xl text-brand-green"></i>
+            </div>
+
+            <!-- Product Grid (Dynamic) -->
+            <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 hidden">
+                <!-- Produk akan dimuat secara dinamis dari database -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-products" class="text-center py-20 hidden">
+                <i class="fa-solid fa-box-open text-6xl text-slate-300 mb-4"></i>
+                <p class="text-slate-500 font-medium">Belum ada produk di etalase saat ini.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Bottom Section -->
+    <section id="mitra" class="py-20 relative overflow-hidden">
+        <!-- Background Banner -->
+        <div class="absolute inset-0 bg-brand-blue">
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 2px, transparent 2px); background-size: 30px 30px;"></div>
+        </div>
+        <div class="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">Bukti, Bukan Sekadar Janji.</h2>
+            <p class="text-lg text-blue-100 mb-10 max-w-2xl mx-auto">Baik Anda yang mencari produk berkualitas untuk kebutuhan sehari-hari, maupun suplier lokal yang ingin berkembang dan dikurasi bersama kami.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="px-8 py-4 bg-brand-green hover:bg-brand-light hover:text-slate-800 rounded-full font-bold transition-all shadow-lg text-lg">
+                    Mulai Belanja
+                </button>
+                <button class="px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-brand-blue rounded-full font-bold transition-all text-lg">
+                    Kemitraan Suplier
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8 mb-8 border-b border-slate-700 pb-8">
+            <div class="md:col-span-2">
+                <a href="#" class="flex items-center space-x-2 mb-4">
+                    <svg class="w-8 h-8 text-brand-green" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="#ffffff"/>
+                        <path d="M12 2a10 10 0 0 0-7.07 17.07A10 10 0 0 1 12 2z" fill="#2a9d8f" opacity="0.9"/>
+                    </svg>
+                    <span class="self-center text-2xl font-bold whitespace-nowrap text-white">Pasti<span class="text-brand-green">Baik</span></span>
+                </a>
+                <p class="text-sm text-slate-400 max-w-sm mb-4">Platform kurasi produk lokal unggulan. Menghadirkan ketenangan berbelanja dengan jaminan kualitas, keamanan, dan keabsahan legalitas untuk berbagai kebutuhan Anda.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-green hover:text-white transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Tautan Cepat</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Katalog Produk</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Cara Belanja</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Kemitraan Suplier</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4">Bantuan & Legal</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Hubungi Kami</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Syarat & Ketentuan</a></li>
+                    <li><a href="#" class="hover:text-brand-green transition-colors">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <p>&copy; 2026 PastiBaik. Hak Cipta Dilindungi.</p>
+            <div class="flex items-center gap-4 justify-center md:justify-end">
+                <p>Dikelola dan dinaungi oleh <strong>PT Vidhara Tekno Solusindo</strong>.</p>
+                <button onclick="openAdminModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-brand-green text-white rounded-lg transition-colors flex items-center gap-2 font-medium"><i class="fa-solid fa-lock text-[10px]"></i> Admin</button>
+            </div>
+        </div>
+    </footer>
+
+    <div id="msg-modal" class="fixed inset-0 z-[200] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl transform transition-all">
+            <h3 id="msg-title" class="text-xl font-bold text-slate-800 mb-2">Pesan</h3>
+            <p id="msg-text" class="text-slate-600 mb-6">Deskripsi pesan.</p>
+            <div class="flex justify-end gap-3">
+                <button id="msg-cancel" class="hidden px-4 py-2 text-slate-500 hover:bg-slate-100 rounded-lg font-medium transition-colors">Batal</button>
+                <button id="msg-confirm" class="px-4 py-2 bg-brand-green text-white rounded-lg font-medium shadow-md hover:bg-brand-blue transition-colors">Oke</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-login-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-brand-blue/10 text-brand-blue rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800">Login Admin</h3>
+                <p class="text-slate-500 text-sm mt-1">Masukkan PIN untuk mengakses pengelola katalog.</p>
+            </div>
+            <form id="login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <input type="password" id="admin-pin" placeholder="Masukkan PIN (pastibaik2026)" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all text-center tracking-widest text-lg" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-blue hover:bg-brand-green text-white rounded-xl font-bold shadow-lg transition-colors">
+                    Masuk Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" class="fixed inset-0 z-[90] bg-slate-100 hidden flex-col h-screen overflow-hidden">
+        <!-- Header Dashboard -->
+        <div class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shrink-0 shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-brand-blue text-white rounded-lg flex items-center justify-center"><i class="fa-solid fa-box-open"></i></div>
+                <h2 class="text-xl font-bold text-slate-800">Manajemen <span class="text-brand-green">Katalog</span></h2>
+            </div>
+            <button onclick="closeAdminDashboard()" class="px-4 py-2 bg-slate-100 text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-lg font-medium transition-colors">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i>Tutup
+            </button>
+        </div>
+
+        <!-- Body Dashboard -->
+        <div class="flex-1 overflow-auto p-4 md:p-6">
+            <div class="max-w-7xl mx-auto flex flex-col xl:flex-row gap-6">
+                <!-- Panel Kiri: Form Input -->
+                <div class="xl:w-1/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 h-fit">
+                    <h3 id="form-title" class="text-lg font-bold text-slate-800 mb-6 border-b pb-2">Tambah Produk Baru</h3>
+                    <form id="product-form" class="space-y-4 text-sm">
+                        <input type="hidden" id="prod-id">
+                        
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Nama Produk *</label>
+                            <input type="text" id="prod-name" required class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Produsen / Suplier *</label>
+                            <input type="text" id="prod-producer" required class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Macam-macam Produk (Varian)</label>
+                            <input type="text" id="prod-variants" placeholder="Misal: Rasa Coklat, Keju, Original" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <label class="block font-medium text-slate-700 mb-1">Harga (Rp) *</label>
+                                <input type="number" id="prod-price" required min="0" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                            </div>
+                            <div class="w-1/2">
+                                <label class="block font-medium text-slate-700 mb-1">Stok / Kuantiti *</label>
+                                <input type="number" id="prod-qty" required min="0" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">URL Gambar Produk</label>
+                            <input type="url" id="prod-img" placeholder="https://..." class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                            <p class="text-xs text-slate-400 mt-1">Kosongkan jika ingin menggunakan gambar default.</p>
+                        </div>
+
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Link Pembelian (WA / Marketplace)</label>
+                            <input type="url" id="prod-link" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Link Sertifikat Halal / Legalitas</label>
+                            <input type="url" id="prod-halal" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1">Keterangan Lain</label>
+                            <textarea id="prod-notes" rows="2" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none"></textarea>
+                        </div>
+
+                        <div class="pt-4 flex gap-2">
+                            <button type="button" onclick="resetForm()" class="w-1/3 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-bold hover:bg-slate-300 transition-colors">Batal</button>
+                            <button type="submit" id="btn-submit" class="w-2/3 py-2.5 bg-brand-green text-white rounded-lg font-bold shadow-md hover:bg-brand-blue transition-colors">Simpan Produk</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Panel Kanan: Tabel Data -->
+                <div class="xl:w-2/3 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 border-b pb-2">Daftar Produk Aktif</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600 whitespace-nowrap">
+                            <thead class="bg-slate-50 text-slate-700">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">Produk & Produsen</th>
+                                    <th class="px-4 py-3">Harga</th>
+                                    <th class="px-4 py-3">Stok</th>
+                                    <th class="px-4 py-3 rounded-r-lg text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-table-body" class="divide-y divide-slate-100">
+                                <!-- Data tabel dimuat via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // UI Toggles Admin Modal
+        window.openAdminModal = () => {
+            document.getElementById('admin-login-modal').classList.remove('hidden');
+            document.getElementById('admin-login-modal').classList.add('flex');
+            document.getElementById('admin-pin').focus();
+        };
+        
+        window.closeAdminModal = () => {
+            document.getElementById('admin-login-modal').classList.add('hidden');
+            document.getElementById('admin-login-modal').classList.remove('flex');
+            document.getElementById('admin-pin').value = '';
+        };
+
+        window.closeAdminDashboard = () => {
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('flex');
+            document.body.style.overflow = 'auto'; // Restore scroll
+        };
+
+        window.formatRupiah = (number) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        };
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Setup Firebase
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'pastibaik-cms';
+        let firebaseConfig = {};
+        try { firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}'); } catch (e) { console.error("Firebase config error"); }
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let globalProducts = [];
+        let isEditing = false;
+
+        // Custom Modal Alert / Confirm
+        const showMsg = (title, text, isConfirm = false) => {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('msg-modal');
+                document.getElementById('msg-title').innerText = title;
+                document.getElementById('msg-text').innerText = text;
+                const btnCancel = document.getElementById('msg-cancel');
+                const btnConfirm = document.getElementById('msg-confirm');
+                
+                modal.classList.remove('hidden'); modal.classList.add('flex');
+                if(isConfirm) btnCancel.classList.remove('hidden');
+                else btnCancel.classList.add('hidden');
+                
+                const cleanup = () => {
+                    modal.classList.add('hidden'); modal.classList.remove('flex');
+                    btnConfirm.onclick = null; btnCancel.onclick = null;
+                };
+                btnConfirm.onclick = () => { cleanup(); resolve(true); };
+                btnCancel.onclick = () => { cleanup(); resolve(false); };
+            });
+        };
+        window.showMsg = showMsg; // Expose to global
+
+        // Otentikasi dan Mulai Sinkronisasi Data
+        const initDB = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                // Mendengarkan perubahan data secara realtime
+                const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+                onSnapshot(productsRef, (snapshot) => {
+                    globalProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderPublicEtalase();
+                    renderAdminTable();
+                }, (error) => {
+                    console.error("Gagal mengambil data: ", error);
+                });
+            } catch (error) {
+                console.error("Auth Error: ", error);
+            }
+        };
+
+        // Render Etalase Publik (Halaman Depan)
+        const renderPublicEtalase = () => {
+            const grid = document.getElementById('product-grid');
+            const loading = document.getElementById('loading-products');
+            const empty = document.getElementById('empty-products');
+            
+            loading.classList.add('hidden');
+            
+            if (globalProducts.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            empty.classList.add('hidden');
+            grid.classList.remove('hidden');
+            grid.innerHTML = '';
+
+            globalProducts.forEach(prod => {
+                const isAvailable = Number(prod.quantity) > 0;
+                const defaultImg = `https://placehold.co/400x400/e9c46a/0f4c5c?text=${encodeURIComponent(prod.name)}`;
+                const imgUrl = prod.image || defaultImg;
+                
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover-lift group relative overflow-hidden flex flex-col ${!isAvailable ? 'opacity-75 grayscale-[50%]' : ''}`;
+                
+                let badgesHTML = `<div class="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur text-brand-green text-xs font-bold px-2 py-1 rounded-md shadow-sm"><i class="fa-solid fa-check mr-1"></i> Teruji</div>`;
+                if (!isAvailable) {
+                    badgesHTML += `<div class="absolute top-6 right-6 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">Habis</div>`;
+                }
+
+                card.innerHTML = `
+                    ${badgesHTML}
+                    <div class="rounded-xl overflow-hidden mb-4 bg-slate-100 h-48 shrink-0 relative">
+                        <img src="${imgUrl}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${defaultImg}'">
+                    </div>
+                    <div class="space-y-1 mb-4 flex-1">
+                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider line-clamp-1">Oleh: ${prod.producer}</p>
+                        <h4 class="text-lg font-bold text-slate-800 line-clamp-2" title="${prod.name}">${prod.name}</h4>
+                        ${prod.variants ? `<p class="text-xs text-slate-500 line-clamp-1"><i class="fa-solid fa-tags text-slate-300 mr-1"></i>${prod.variants}</p>` : ''}
+                        <p class="text-brand-green font-extrabold text-xl pt-2">${formatRupiah(prod.price)}</p>
+                    </div>
+                    <div class="flex gap-2 mt-auto">
+                        ${prod.halalLink ? `<a href="${prod.halalLink}" target="_blank" class="w-1/4 flex items-center justify-center py-2.5 rounded-xl border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors" title="Cek Sertifikat/Legalitas"><i class="fa-solid fa-file-certificate text-lg"></i></a>` : ''}
+                        
+                        <a ${isAvailable && prod.productLink ? `href="${prod.productLink}" target="_blank"` : ''} class="${!isAvailable ? 'cursor-not-allowed bg-slate-200 text-slate-400' : 'cursor-pointer border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white'} flex-1 py-2.5 rounded-xl border border-brand-blue font-semibold transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> ${isAvailable ? 'Beli Sekarang' : 'Stok Habis'}
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        // Render Tabel Dashboard Admin
+        const renderAdminTable = () => {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+            
+            if(globalProducts.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-slate-400">Belum ada data produk.</td></tr>`;
+                return;
+            }
+
+            globalProducts.forEach(prod => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-4 py-3">
+                        <p class="font-bold text-slate-800">${prod.name}</p>
+                        <p class="text-xs text-slate-500">${prod.producer}</p>
+                    </td>
+                    <td class="px-4 py-3 font-medium text-brand-green">${formatRupiah(prod.price)}</td>
+                    <td class="px-4 py-3">
+                        <span class="${prod.quantity > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} px-2 py-1 rounded-full text-xs font-bold">${prod.quantity} unit</span>
+                    </td>
+                    <td class="px-4 py-3 text-right space-x-2">
+                        <button onclick="editProduct('${prod.id}')" class="w-8 h-8 rounded bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteProduct('${prod.id}')" class="w-8 h-8 rounded bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        // Handle Login Admin
+        window.handleAdminLogin = (e) => {
+            e.preventDefault();
+            const pin = document.getElementById('admin-pin').value;
+            if(pin === 'pastibaik2026') {
+                closeAdminModal();
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-dashboard').classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                showMsg("Akses Ditolak", "PIN yang Anda masukkan salah. Silakan coba lagi.");
+            }
+        };
+
+        // Form Submit Handler (Create / Update)
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+            btnSubmit.disabled = true;
+
+            const prodData = {
+                name: document.getElementById('prod-name').value,
+                producer: document.getElementById('prod-producer').value,
+                variants: document.getElementById('prod-variants').value,
+                price: Number(document.getElementById('prod-price').value),
+                quantity: Number(document.getElementById('prod-qty').value),
+                image: document.getElementById('prod-img').value,
+                productLink: document.getElementById('prod-link').value,
+                halalLink: document.getElementById('prod-halal').value,
+                notes: document.getElementById('prod-notes').value,
+                updatedAt: new Date().toISOString()
+            };
+
+            const id = document.getElementById('prod-id').value;
+            try {
+                if(isEditing && id) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id), prodData);
+                    await showMsg("Berhasil", "Data produk berhasil diperbarui.");
+                } else {
+                    prodData.createdAt = new Date().toISOString();
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), prodData);
+                    await showMsg("Berhasil", "Produk baru berhasil ditambahkan.");
+                }
+                resetForm();
+            } catch (error) {
+                console.error("Gagal menyimpan:", error);
+                await showMsg("Gagal", "Terjadi kesalahan saat menyimpan data.");
+            } finally {
+                btnSubmit.innerHTML = 'Simpan Produk';
+                btnSubmit.disabled = false;
+            }
+        });
+
+        // Hapus Produk
+        window.deleteProduct = async (id) => {
+            const confirm = await showMsg("Hapus Produk", "Apakah Anda yakin ingin menghapus produk ini secara permanen?", true);
+            if(confirm) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
+                } catch (error) {
+                    console.error("Gagal menghapus:", error);
+                    showMsg("Gagal", "Terjadi kesalahan saat menghapus data.");
+                }
+            }
+        };
+
+        // Edit Produk (Isi Form)
+        window.editProduct = (id) => {
+            const prod = globalProducts.find(p => p.id === id);
+            if(prod) {
+                isEditing = true;
+                document.getElementById('form-title').innerText = "Edit Produk";
+                document.getElementById('btn-submit').innerText = "Update Produk";
+                document.getElementById('btn-submit').classList.replace('bg-brand-green', 'bg-brand-blue');
+                
+                document.getElementById('prod-id').value = prod.id;
+                document.getElementById('prod-name').value = prod.name;
+                document.getElementById('prod-producer').value = prod.producer;
+                document.getElementById('prod-variants').value = prod.variants || '';
+                document.getElementById('prod-price').value = prod.price;
+                document.getElementById('prod-qty').value = prod.quantity;
+                document.getElementById('prod-img').value = prod.image || '';
+                document.getElementById('prod-link').value = prod.productLink || '';
+                document.getElementById('prod-halal').value = prod.halalLink || '';
+                document.getElementById('prod-notes').value = prod.notes || '';
+            }
+        };
+
+        // Reset Form
+        window.resetForm = () => {
+            isEditing = false;
+            document.getElementById('product-form').reset();
+            document.getElementById('prod-id').value = '';
+            document.getElementById('form-title').innerText = "Tambah Produk Baru";
+            document.getElementById('btn-submit').innerText = "Simpan Produk";
+            document.getElementById('btn-submit').classList.replace('bg-brand-blue', 'bg-brand-green');
+        };
+
+        // Initialize!
+        initDB();
+    </script>
+</body>
+</html>
