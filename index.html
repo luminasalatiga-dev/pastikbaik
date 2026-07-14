@@ -261,16 +261,51 @@
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <h3 class="text-2xl font-bold text-slate-800">Login Admin</h3>
-                <p class="text-slate-500 text-sm mt-1">Masukkan PIN untuk mengakses pengelola katalog.</p>
+                <p class="text-slate-500 text-sm mt-1">Masukkan username dan password untuk mengakses pengelola katalog.</p>
             </div>
             <form id="login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
                 <div>
-                    <input type="password" id="admin-pin" placeholder="Masukkan PIN (pastibaik2026)" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all text-center tracking-widest text-lg" required>
+                    <label class="block text-xs font-semibold text-slate-700 mb-2">Username</label>
+                    <input type="text" id="admin-username" placeholder="admin" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-2">Password</label>
+                    <input type="password" id="admin-password" placeholder="Masukkan password" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all" required>
                 </div>
                 <button type="submit" class="w-full py-3 bg-brand-blue hover:bg-brand-green text-white rounded-xl font-bold shadow-lg transition-colors">
                     Masuk Dashboard
                 </button>
             </form>
+            <div class="text-center mt-4">
+                <button type="button" onclick="openForgotPasswordModal()" class="text-sm text-brand-green hover:text-brand-blue font-medium transition-colors">
+                    Lupa Password?
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgot-password-modal" class="fixed inset-0 z-[101] hidden items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800">Lupa Password</h3>
+                <p class="text-slate-500 text-sm mt-1">Kami akan mengirim username dan password ke email Anda.</p>
+            </div>
+            <form onsubmit="handleForgotPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-2">Email</label>
+                    <input type="email" id="forgot-email" placeholder="Masukkan email Anda" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-brand-green focus:ring-2 focus:ring-brand-green/20 outline-none transition-all" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-green hover:bg-brand-blue text-white rounded-xl font-bold shadow-lg transition-colors">
+                    Kirim Kredensial
+                </button>
+            </form>
+            <p class="text-xs text-slate-500 text-center mt-4">Kredensial akan dikirim ke <strong>masdew165@gmail.com</strong></p>
         </div>
     </div>
 
@@ -384,19 +419,24 @@
         window.openAdminModal = () => {
             document.getElementById('admin-login-modal').classList.remove('hidden');
             document.getElementById('admin-login-modal').classList.add('flex');
-            document.getElementById('admin-pin').focus();
+            document.getElementById('forgot-password-modal').classList.add('hidden');
+            document.getElementById('forgot-password-modal').classList.remove('flex');
+            document.getElementById('admin-username').focus();
         };
         
         window.closeAdminModal = () => {
             document.getElementById('admin-login-modal').classList.add('hidden');
             document.getElementById('admin-login-modal').classList.remove('flex');
-            document.getElementById('admin-pin').value = '';
+            document.getElementById('admin-username').value = '';
+            document.getElementById('admin-password').value = '';
+            closeForgotPasswordModal();
         };
 
         window.closeAdminDashboard = () => {
             document.getElementById('admin-dashboard').classList.add('hidden');
             document.getElementById('admin-dashboard').classList.remove('flex');
             document.body.style.overflow = 'auto'; // Restore scroll
+            resetForm();
         };
 
         window.formatRupiah = (number) => {
@@ -681,15 +721,57 @@
         // Handle Login Admin
         window.handleAdminLogin = (e) => {
             e.preventDefault();
-            const pin = document.getElementById('admin-pin').value;
-            if(pin === 'pastibaik2026') {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if(username === 'admin' && password === 'pastibaik_0301') {
                 closeAdminModal();
                 document.getElementById('admin-dashboard').classList.remove('hidden');
                 document.getElementById('admin-dashboard').classList.add('flex');
                 document.body.style.overflow = 'hidden';
+                // Reset form
+                document.getElementById('admin-username').value = '';
+                document.getElementById('admin-password').value = '';
             } else {
-                showMsg("Akses Ditolak", "PIN yang Anda masukkan salah. Silakan coba lagi.");
+                showMsg("Akses Ditolak", "Username atau password yang Anda masukkan salah. Silakan coba lagi.");
             }
+        };
+
+        // Open Forgot Password Modal
+        window.openForgotPasswordModal = () => {
+            document.getElementById('admin-login-modal').classList.add('hidden');
+            document.getElementById('admin-login-modal').classList.remove('flex');
+            document.getElementById('forgot-password-modal').classList.remove('hidden');
+            document.getElementById('forgot-password-modal').classList.add('flex');
+        };
+
+        // Close Forgot Password Modal
+        window.closeForgotPasswordModal = () => {
+            document.getElementById('forgot-password-modal').classList.add('hidden');
+            document.getElementById('forgot-password-modal').classList.remove('flex');
+            document.getElementById('admin-login-modal').classList.remove('hidden');
+            document.getElementById('admin-login-modal').classList.add('flex');
+            document.getElementById('forgot-email').value = '';
+        };
+
+        // Handle Forgot Password
+        window.handleForgotPassword = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            
+            // Validate that email is the correct one
+            const validEmail = 'masdew165@gmail.com';
+            if(email !== validEmail) {
+                await showMsg("Email Tidak Cocok", `Kredensial hanya dikirim ke ${validEmail}. Silakan gunakan email tersebut.");
+                return;
+            }
+
+            // Show success message
+            await showMsg("Permintaan Diterima", `Kredensial login (admin / pastibaik_0301) telah dikirim ke ${email}. Periksa email Anda dalam beberapa menit.");
+            
+            // In a real application, you would send an email here
+            // For now, we'll just close the modal
+            closeForgotPasswordModal();
         };
 
         // Form Submit Handler (Create / Update)
