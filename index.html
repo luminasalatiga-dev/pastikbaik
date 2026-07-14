@@ -463,34 +463,10 @@
         };
     </script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Setup Firebase
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'pastibaik-cms';
-        let firebaseConfig = {};
-        try { firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}'); } catch (e) { console.error("Firebase config error"); }
-
-        let app = null;
-        let auth = null;
-        let db = null;
-        let firebaseReady = false;
-
-        if (window.isFirebaseConfigValid()) {
-            try {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-                firebaseReady = true;
-            } catch (error) {
-                console.error("Firebase initialization error:", error);
-            }
-        }
-
-        let globalProducts = [];
-        let isEditing = false;
+    <script>
+        // Initialize data store
+        window.globalProducts = [];
+        window.isEditing = false;
         const seedProducts = [{
             id: 'bpjph-ayam-halal',
             name: 'Ayam Segar Halal Premium',
@@ -569,298 +545,73 @@
             halalLink: 'https://bpjph.halal.go.id/cari/sertifikat?no_regis=ID33410032995761125',
             notes: 'Beragam jajanan tradisional dengan rasa gurih dan aman dikonsumsi.'
         }];
-
-        // Custom Modal Alert / Confirm
-        const showMsg = (title, text, isConfirm = false) => {
-            return new Promise((resolve) => {
-                const modal = document.getElementById('msg-modal');
-                document.getElementById('msg-title').innerText = title;
-                document.getElementById('msg-text').innerText = text;
-                const btnCancel = document.getElementById('msg-cancel');
-                const btnConfirm = document.getElementById('msg-confirm');
-                
-                modal.classList.remove('hidden'); modal.classList.add('flex');
-                if(isConfirm) btnCancel.classList.remove('hidden');
-                else btnCancel.classList.add('hidden');
-                
-                const cleanup = () => {
-                    modal.classList.add('hidden'); modal.classList.remove('flex');
-                    btnConfirm.onclick = null; btnCancel.onclick = null;
-                };
-                btnConfirm.onclick = () => { cleanup(); resolve(true); };
-                btnCancel.onclick = () => { cleanup(); resolve(false); };
-            });
-        };
-        window.showMsg = showMsg; // Expose to global
-
-        // Otentikasi dan Mulai Sinkronisasi Data
-        const initDB = async () => {
-            if (!firebaseReady) {
-                console.warn("Firebase config invalid or missing. Skipping Firestore initialization.");
-                globalProducts = seedProducts;
-                renderPublicEtalase();
-                renderAdminTable();
-                return;
-            }
-
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                
-                // Mendengarkan perubahan data secara realtime
-                const productsRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-                onSnapshot(productsRef, (snapshot) => {
-                    globalProducts = snapshot.docs.length > 0
-                        ? snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                        : seedProducts;
-                    renderPublicEtalase();
-                    renderAdminTable();
-                }, (error) => {
-                    console.error("Gagal mengambil data: ", error);
-                    globalProducts = seedProducts;
-                    renderPublicEtalase();
-                    renderAdminTable();
-                });
-            } catch (error) {
-                console.error("Auth Error: ", error);
-                globalProducts = seedProducts;
-                renderPublicEtalase();
-                renderAdminTable();
-            }
-        };
-
-        // Render Etalase Publik (Halaman Depan)
-        const renderPublicEtalase = () => {
+        window.seedProducts = seedProducts;
+        
+        // Render public storefront
+        window.renderPublicEtalase = () => {
+            console.log('renderPublicEtalase called with', window.globalProducts.length, 'products');
             const grid = document.getElementById('product-grid');
             const loading = document.getElementById('loading-products');
             const empty = document.getElementById('empty-products');
+            if (!grid) return;
             
             loading.classList.add('hidden');
+            grid.innerHTML = '';
             
-            if (globalProducts.length === 0) {
-                grid.classList.add('hidden');
+            if (window.globalProducts.length === 0) {
                 empty.classList.remove('hidden');
                 return;
             }
             
             empty.classList.add('hidden');
-            grid.classList.remove('hidden');
-            grid.innerHTML = '';
-
-            globalProducts.forEach(prod => {
-                const isAvailable = Number(prod.quantity) > 0;
-                const defaultImg = `https://placehold.co/400x400/e9c46a/0f4c5c?text=${encodeURIComponent(prod.name)}`;
-                const imgUrl = prod.image || defaultImg;
-                
+            window.globalProducts.forEach(prod => {
                 const card = document.createElement('div');
-                card.className = `bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover-lift group relative overflow-hidden flex flex-col ${!isAvailable ? 'opacity-75 grayscale-[50%]' : ''}`;
-                
-                let badgesHTML = `<div class="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur text-brand-green text-xs font-bold px-2 py-1 rounded-md shadow-sm"><i class="fa-solid fa-check mr-1"></i> Teruji</div>`;
-                if (!isAvailable) {
-                    badgesHTML += `<div class="absolute top-6 right-6 z-10 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">Habis</div>`;
-                }
-
+                card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition';
                 card.innerHTML = `
-                    ${badgesHTML}
-                    <div class="rounded-xl overflow-hidden mb-4 bg-slate-100 h-48 shrink-0 relative">
-                        <img src="${imgUrl}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${defaultImg}'">
-                    </div>
-                    <div class="space-y-1 mb-4 flex-1">
-                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider line-clamp-1">Oleh: ${prod.producer}</p>
-                        <h4 class="text-lg font-bold text-slate-800 line-clamp-2" title="${prod.name}">${prod.name}</h4>
-                        ${prod.variants ? `<p class="text-xs text-slate-500 line-clamp-1"><i class="fa-solid fa-tags text-slate-300 mr-1"></i>${prod.variants}</p>` : ''}
-                        <p class="text-brand-green font-extrabold text-xl pt-2">${formatRupiah(prod.price)}</p>
-                        ${prod.notes ? `<p class="text-xs text-slate-500 leading-relaxed line-clamp-2">${prod.notes}</p>` : ''}
-                    </div>
-                    <div class="flex gap-2 mt-auto">
-                        ${prod.halalLink ? `<a href="${prod.halalLink}" target="_blank" class="w-1/4 flex items-center justify-center py-2.5 rounded-xl border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-white transition-colors" title="Cek Sertifikat/Legalitas"><i class="fa-solid fa-file-certificate text-lg"></i></a>` : ''}
-                        
-                        <a ${isAvailable && prod.productLink ? `href="${prod.productLink}" target="_blank"` : ''} class="${!isAvailable ? 'cursor-not-allowed bg-slate-200 text-slate-400' : 'cursor-pointer border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white'} flex-1 py-2.5 rounded-xl border border-brand-blue font-semibold transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-brands fa-whatsapp text-lg"></i> ${isAvailable ? 'Beli Sekarang' : 'Stok Habis'}
-                        </a>
+                    <img src="${prod.image}" alt="${prod.name}" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <p class="text-xs text-gray-500">${prod.producer}</p>
+                        <h3 class="font-bold text-brand-blue text-sm mb-1">${prod.name}</h3>
+                        <p class="text-xs text-gray-600 mb-2">${prod.variants}</p>
+                        <p class="font-bold text-brand-green text-lg mb-2">Rp${prod.price.toLocaleString('id-ID')}</p>
+                        ${prod.notes ? `<p class="text-xs text-gray-700 mb-2 italic">${prod.notes}</p>` : ''}
+                        <div class="flex gap-2 mb-2">
+                            <a href="https://wa.me/?text=${encodeURIComponent(`Halo, saya tertarik dengan ${prod.name}`)}" class="flex-1 bg-brand-green text-white text-sm px-2 py-1 rounded hover:bg-opacity-90 text-center">
+                                Pesan via WA
+                            </a>
+                            ${prod.halalLink ? `<a href="${prod.halalLink}" target="_blank" class="text-xs text-brand-blue hover:underline px-1 py-1">Halal Link</a>` : ''}
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         };
-
-        // Render Tabel Dashboard Admin
-        const renderAdminTable = () => {
-            const tbody = document.getElementById('admin-table-body');
+        
+        // Render admin table
+        window.renderAdminTable = () => {
+            console.log('renderAdminTable called');
+            const tbody = document.querySelector('#admin-products-table tbody');
+            if (!tbody) return;
             tbody.innerHTML = '';
-            
-            if(globalProducts.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-slate-400">Belum ada data produk.</td></tr>`;
-                return;
-            }
-
-            globalProducts.forEach(prod => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition-colors";
-                tr.innerHTML = `
-                    <td class="px-4 py-3">
-                        <p class="font-bold text-slate-800">${prod.name}</p>
-                        <p class="text-xs text-slate-500">${prod.producer}</p>
-                    </td>
-                    <td class="px-4 py-3 font-medium text-brand-green">${formatRupiah(prod.price)}</td>
-                    <td class="px-4 py-3">
-                        <span class="${prod.quantity > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} px-2 py-1 rounded-full text-xs font-bold">${prod.quantity} unit</span>
-                    </td>
-                    <td class="px-4 py-3 text-right space-x-2">
-                        <button onclick="editProduct('${prod.id}')" class="w-8 h-8 rounded bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteProduct('${prod.id}')" class="w-8 h-8 rounded bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors"><i class="fa-solid fa-trash"></i></button>
+            window.globalProducts.forEach(prod => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td class="border px-4 py-2">${prod.name}</td>
+                    <td class="border px-4 py-2">${prod.price}</td>
+                    <td class="border px-4 py-2">${prod.quantity}</td>
+                    <td class="border px-4 py-2 text-sm">
+                        <button onclick="editProduct('${prod.id}')" class="bg-brand-blue text-white px-2 py-1 rounded mr-2">Edit</button>
+                        <button onclick="deleteProduct('${prod.id}')" class="bg-red-500 text-white px-2 py-1 rounded">Hapus</button>
                     </td>
                 `;
-                tbody.appendChild(tr);
             });
         };
-
-        // Handle Login Admin
-        window.handleAdminLogin = (e) => {
-            e.preventDefault();
-            const username = document.getElementById('admin-username').value;
-            const password = document.getElementById('admin-password').value;
-            
-            if(username === 'admin' && password === 'pastibaik_0301') {
-                closeAdminModal();
-                document.getElementById('admin-dashboard').classList.remove('hidden');
-                document.getElementById('admin-dashboard').classList.add('flex');
-                document.body.style.overflow = 'hidden';
-                // Reset form
-                document.getElementById('admin-username').value = '';
-                document.getElementById('admin-password').value = '';
-            } else {
-                showMsg("Akses Ditolak", "Username atau password yang Anda masukkan salah. Silakan coba lagi.");
-            }
-        };
-
-        // Open Forgot Password Modal
-        window.openForgotPasswordModal = () => {
-            document.getElementById('admin-login-modal').classList.add('hidden');
-            document.getElementById('admin-login-modal').classList.remove('flex');
-            document.getElementById('forgot-password-modal').classList.remove('hidden');
-            document.getElementById('forgot-password-modal').classList.add('flex');
-        };
-
-        // Close Forgot Password Modal
-        window.closeForgotPasswordModal = () => {
-            document.getElementById('forgot-password-modal').classList.add('hidden');
-            document.getElementById('forgot-password-modal').classList.remove('flex');
-            document.getElementById('admin-login-modal').classList.remove('hidden');
-            document.getElementById('admin-login-modal').classList.add('flex');
-            document.getElementById('forgot-email').value = '';
-        };
-
-        // Handle Forgot Password
-        window.handleForgotPassword = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgot-email').value;
-            
-            // Validate that email is the correct one
-            const validEmail = 'masdew165@gmail.com';
-            if(email !== validEmail) {
-                await showMsg("Email Tidak Cocok", `Kredensial hanya dikirim ke ${validEmail}. Silakan gunakan email tersebut.");
-                return;
-            }
-
-            // Show success message
-            await showMsg("Permintaan Diterima", `Kredensial login (admin / pastibaik_0301) telah dikirim ke ${email}. Periksa email Anda dalam beberapa menit.");
-            
-            // In a real application, you would send an email here
-            // For now, we'll just close the modal
-            closeForgotPasswordModal();
-        };
-
-        // Form Submit Handler (Create / Update)
-        document.getElementById('product-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btnSubmit = document.getElementById('btn-submit');
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
-            btnSubmit.disabled = true;
-
-            const prodData = {
-                name: document.getElementById('prod-name').value,
-                producer: document.getElementById('prod-producer').value,
-                variants: document.getElementById('prod-variants').value,
-                price: Number(document.getElementById('prod-price').value),
-                quantity: Number(document.getElementById('prod-qty').value),
-                image: document.getElementById('prod-img').value,
-                productLink: document.getElementById('prod-link').value,
-                halalLink: document.getElementById('prod-halal').value,
-                notes: document.getElementById('prod-notes').value,
-                updatedAt: new Date().toISOString()
-            };
-
-            const id = document.getElementById('prod-id').value;
-            try {
-                if(isEditing && id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id), prodData);
-                    await showMsg("Berhasil", "Data produk berhasil diperbarui.");
-                } else {
-                    prodData.createdAt = new Date().toISOString();
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), prodData);
-                    await showMsg("Berhasil", "Produk baru berhasil ditambahkan.");
-                }
-                resetForm();
-            } catch (error) {
-                console.error("Gagal menyimpan:", error);
-                await showMsg("Gagal", "Terjadi kesalahan saat menyimpan data.");
-            } finally {
-                btnSubmit.innerHTML = 'Simpan Produk';
-                btnSubmit.disabled = false;
-            }
-        });
-
-        // Hapus Produk
-        window.deleteProduct = async (id) => {
-            const confirm = await showMsg("Hapus Produk", "Apakah Anda yakin ingin menghapus produk ini secara permanen?", true);
-            if(confirm) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
-                } catch (error) {
-                    console.error("Gagal menghapus:", error);
-                    showMsg("Gagal", "Terjadi kesalahan saat menghapus data.");
-                }
-            }
-        };
-
-        // Edit Produk (Isi Form)
-        window.editProduct = (id) => {
-            const prod = globalProducts.find(p => p.id === id);
-            if(prod) {
-                isEditing = true;
-                document.getElementById('form-title').innerText = "Edit Produk";
-                document.getElementById('btn-submit').innerText = "Update Produk";
-                document.getElementById('btn-submit').classList.replace('bg-brand-green', 'bg-brand-blue');
-                
-                document.getElementById('prod-id').value = prod.id;
-                document.getElementById('prod-name').value = prod.name;
-                document.getElementById('prod-producer').value = prod.producer;
-                document.getElementById('prod-variants').value = prod.variants || '';
-                document.getElementById('prod-price').value = prod.price;
-                document.getElementById('prod-qty').value = prod.quantity;
-                document.getElementById('prod-img').value = prod.image || '';
-                document.getElementById('prod-link').value = prod.productLink || '';
-                document.getElementById('prod-halal').value = prod.halalLink || '';
-                document.getElementById('prod-notes').value = prod.notes || '';
-            }
-        };
-
-        // Reset Form
-        window.resetForm = () => {
-            isEditing = false;
-            document.getElementById('product-form').reset();
-            document.getElementById('prod-id').value = '';
-            document.getElementById('form-title').innerText = "Tambah Produk Baru";
-            document.getElementById('btn-submit').innerText = "Simpan Produk";
-            document.getElementById('btn-submit').classList.replace('bg-brand-blue', 'bg-brand-green');
-        };
-
-        // Initialize!
-        initDB();
+        
+        // Initialize - load seed products immediately
+        console.log('Script loaded, initializing data');
+        window.globalProducts = seedProducts;
+        window.renderPublicEtalase();
+        window.renderAdminTable();
     </script>
 </body>
 </html>
