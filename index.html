@@ -559,10 +559,12 @@
             grid.innerHTML = '';
             
             if (window.globalProducts.length === 0) {
+                grid.classList.add('hidden');
                 empty.classList.remove('hidden');
                 return;
             }
             
+            grid.classList.remove('hidden');
             empty.classList.add('hidden');
             window.globalProducts.forEach(prod => {
                 const card = document.createElement('div');
